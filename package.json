@@ -1,0 +1,13 @@
+{
+  "name": "officeflowai-v0",
+  "version": "1.0.0",
+  "description": "OfficeFlowAI web app with login, quotations, PO OCR capture, receipts, and dashboard.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js"
+  },
+  "keywords": ["quotation", "po", "receipt", "dashboard"],
+  "author": "",
+  "license": "MIT"
+}
