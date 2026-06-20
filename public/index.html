@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OfficeFlowAI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,11 +15,11 @@
       <div class="brand-mark">OF</div>
       <p class="eyebrow">Smart back office suite</p>
       <h1>OfficeFlowAI</h1>
-      <p>เข้าสู่ระบบเพื่อจัดการ Quotation, PO, Receipt และ Dashboard ในที่เดียว</p>
+      <p>Sign in to manage quotations, purchase orders, receipts, and dashboards in one place.</p>
       <form id="loginForm">
         <label>Username<input name="username" value="admin" required autocomplete="username"></label>
         <label>Password<input name="password" type="password" value="admin123" required autocomplete="current-password"></label>
-        <button type="submit">เข้าสู่ระบบ <span aria-hidden="true">→</span></button>
+        <button type="submit">Sign in <span aria-hidden="true">→</span></button>
       </form>
       <p class="hint">Demo: admin / admin123</p>
     </section>
@@ -32,10 +32,10 @@
         <h1>OfficeFlowAI Dashboard</h1>
         <p id="welcomeText"></p>
       </div>
-      <button id="logoutBtn" class="secondary">ออกจากระบบ</button>
+      <button id="logoutBtn" class="secondary">Sign out</button>
     </header>
 
-    <section class="metrics" id="metrics" aria-label="สรุปภาพรวม"></section>
+    <section class="metrics" id="metrics" aria-label="Overview summary"></section>
 
     <section class="grid">
       <article class="card panel-card reveal">
@@ -43,15 +43,15 @@
           <span class="icon-badge">QT</span>
           <div>
             <p class="eyebrow">Quotation builder</p>
-            <h2>ออกใบ Quotation</h2>
+            <h2>Create quotation</h2>
           </div>
         </div>
         <form id="quotationForm">
-          <label>ลูกค้า<input name="customerName" required placeholder="เช่น ABC Co., Ltd."></label>
-          <label>โปรเจกต์<input name="projectName" required placeholder="เช่น Website Revamp"></label>
+          <label>Customer<input name="customerName" required placeholder="e.g. ABC Co., Ltd."></label>
+          <label>Project<input name="projectName" required placeholder="e.g. Website Revamp"></label>
           <div id="quoteItems"></div>
-          <button type="button" class="secondary" id="addItemBtn">+ เพิ่มสินค้า</button>
-          <button type="submit">สร้าง Quotation</button>
+          <button type="button" class="secondary" id="addItemBtn">+ Add item</button>
+          <button type="submit">Create quotation</button>
         </form>
         <div id="quotationResult" class="result"></div>
       </article>
@@ -61,21 +61,21 @@
           <span class="icon-badge">OCR</span>
           <div>
             <p class="eyebrow">PO capture</p>
-            <h2>รับใบ PO และ OCR</h2>
+            <h2>Capture PO with OCR</h2>
           </div>
         </div>
-        <p class="hint">วางข้อความ OCR จากใบ PO หรือพิมพ์ข้อมูลเอง ระบบจะดึงเลข PO ลูกค้า โปรเจกต์ และยอดรวมให้</p>
+        <p class="hint">Paste OCR text from a purchase order or enter the details manually. The system will extract the PO number, customer, project, and total amount.</p>
         <form id="poForm">
-          <label>ข้อความ OCR<textarea name="ocrText" rows="7" placeholder="PO No: PO-2026-001&#10;Customer: ABC Co., Ltd.&#10;Project: Website Revamp&#10;Total: 120000"></textarea></label>
+          <label>OCR text<textarea name="ocrText" rows="7" placeholder="PO No: PO-2026-001&#10;Customer: ABC Co., Ltd.&#10;Project: Website Revamp&#10;Total: 120000"></textarea></label>
           <div class="two-col">
-            <label>เลข PO<input name="poNumber" placeholder="PO-2026-001"></label>
-            <label>ยอดรวม<input name="totalAmount" type="number" min="0" step="0.01" placeholder="120000"></label>
+            <label>PO number<input name="poNumber" placeholder="PO-2026-001"></label>
+            <label>Total amount<input name="totalAmount" type="number" min="0" step="0.01" placeholder="120000"></label>
           </div>
           <div class="two-col">
-            <label>ลูกค้า<input name="customerName" placeholder="ABC Co., Ltd."></label>
-            <label>โปรเจกต์<input name="projectName" placeholder="Website Revamp"></label>
+            <label>Customer<input name="customerName" placeholder="ABC Co., Ltd."></label>
+            <label>Project<input name="projectName" placeholder="Website Revamp"></label>
           </div>
-          <button type="submit">บันทึก PO</button>
+          <button type="submit">Save PO</button>
         </form>
       </article>
     </section>
@@ -85,7 +85,7 @@
         <span class="icon-badge">LIVE</span>
         <div>
           <p class="eyebrow">Recent activity</p>
-          <h2>ข้อมูลล่าสุด / ยืนยันชำระเงิน</h2>
+          <h2>Recent records / Payment confirmation</h2>
         </div>
       </div>
       <div class="tables">
@@ -98,10 +98,10 @@
 
   <template id="itemTemplate">
     <div class="quote-row">
-      <input name="name" placeholder="ชื่อสินค้า/บริการ" required>
-      <input name="quantity" type="number" min="1" value="1" required aria-label="จำนวน">
-      <input name="price" type="number" min="0" step="0.01" placeholder="ราคา" required>
-      <button type="button" class="danger">ลบ</button>
+      <input name="name" placeholder="Product/service name" required>
+      <input name="quantity" type="number" min="1" value="1" required aria-label="Quantity">
+      <input name="price" type="number" min="0" step="0.01" placeholder="Price" required>
+      <button type="button" class="danger">Remove</button>
     </div>
   </template>
   <script src="app.js"></script>

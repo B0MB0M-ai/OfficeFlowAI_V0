@@ -52,7 +52,7 @@ function getSession(req) {
 function requireAuth(req, res) {
   const session = getSession(req);
   if (!session) {
-    sendJson(res, 401, { error: 'กรุณาเข้าสู่ระบบก่อนใช้งาน' });
+    sendJson(res, 401, { error: 'Please sign in before using the app' });
     return null;
   }
   return session;
@@ -80,7 +80,7 @@ function id(prefix) {
 }
 
 function money(value) {
-  return Number(value || 0).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return Number(value || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function calculateItems(items = []) {
@@ -100,11 +100,11 @@ function extractPoText(rawText) {
     }
     return '';
   };
-  const amountMatch = text.match(/(?:total|amount|ยอดรวม|รวม)\s*[:：-]?\s*([\d,.]+)/i);
+  const amountMatch = text.match(/(?:total|amount)\s*[:：-]?\s*([\d,.]+)/i);
   return {
-    poNumber: pick(['PO No', 'PO Number', 'เลขที่ PO', 'เลขที่']),
-    customerName: pick(['Customer', 'ลูกค้า', 'บริษัท']),
-    projectName: pick(['Project', 'โปรเจกต์', 'โครงการ']),
+    poNumber: pick(['PO No', 'PO Number', 'PO Ref', 'PO ID']),
+    customerName: pick(['Customer', 'Client', 'Company']),
+    projectName: pick(['Project', 'Job', 'Campaign']),
     totalAmount: amountMatch ? Number(amountMatch[1].replace(/,/g, '')) : 0,
     rawText: text
   };
@@ -167,7 +167,7 @@ async function handleApi(req, res) {
         res.setHeader('Set-Cookie', `session=${token}; HttpOnly; Path=/; SameSite=Lax`);
         return sendJson(res, 200, { user: { name: demoUser.name, username: demoUser.username } });
       }
-      return sendJson(res, 401, { error: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' });
+      return sendJson(res, 401, { error: 'Invalid username or password' });
     }
     if (req.method === 'POST' && req.url === '/api/logout') {
       const token = parseCookies(req).session;
@@ -206,7 +206,7 @@ async function handleApi(req, res) {
     if (req.method === 'POST' && req.url.match(/^\/api\/purchase-orders\/[^/]+\/pay$/)) {
       const poId = req.url.split('/')[3];
       const po = db.purchaseOrders.find(item => item.id === poId);
-      if (!po) return sendJson(res, 404, { error: 'ไม่พบใบ PO' });
+      if (!po) return sendJson(res, 404, { error: 'Purchase order not found' });
       po.status = 'paid';
       const receipt = { id: id('RC'), poId: po.id, amount: Number(po.totalAmount || 0), createdAt: new Date().toISOString() };
       receipt.pdfUrl = createReceiptPdf(receipt, po);
