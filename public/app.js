@@ -21,15 +21,25 @@ async function boot() {
   if (me.user) showApp(me.user); else showLogin();
 }
 
+function restartAnimations(root) {
+  root.querySelectorAll('.reveal, .metric, .list-item, .quote-row').forEach(element => {
+    element.style.animation = 'none';
+    element.offsetHeight;
+    element.style.animation = '';
+  });
+}
+
 function showLogin() {
   loginView.classList.remove('hidden');
   appView.classList.add('hidden');
+  restartAnimations(loginView);
 }
 
 async function showApp(user) {
   document.querySelector('#welcomeText').textContent = `ยินดีต้อนรับ ${user.name}`;
   loginView.classList.add('hidden');
   appView.classList.remove('hidden');
+  restartAnimations(appView);
   await loadDashboard();
 }
 
@@ -41,18 +51,18 @@ async function loadDashboard() {
     ['ยอด PO', money(metrics.poTotal)],
     ['ยอดชำระแล้ว', money(metrics.paidTotal)],
     ['PO รอชำระ', metrics.openPo]
-  ].map(([label, value]) => `<div class="metric">${label}<strong>${value}</strong></div>`).join('');
+  ].map(([label, value], index) => `<div class="metric" style="animation-delay: ${index * 70}ms">${label}<strong>${value}</strong></div>`).join('');
 
-  document.querySelector('#quotationList').innerHTML = data.quotations.map(q => `
-    <div class="list-item"><strong>${q.id}</strong> ${q.customerName}<small>${q.projectName} • ${money(q.grandTotal)} • ${new Date(q.createdAt).toLocaleString('th-TH')}</small></div>
+  document.querySelector('#quotationList').innerHTML = data.quotations.map((q, index) => `
+    <div class="list-item" style="animation-delay: ${index * 45}ms"><strong>${q.id}</strong> ${q.customerName}<small>${q.projectName} • ${money(q.grandTotal)} • ${new Date(q.createdAt).toLocaleString('th-TH')}</small></div>
   `).join('') || '<p>ยังไม่มีข้อมูล</p>';
 
-  document.querySelector('#poList').innerHTML = data.purchaseOrders.map(po => `
-    <div class="list-item"><strong>${po.poNumber || po.id}</strong> ${po.customerName || '-'}<small>${po.projectName || '-'} • ${money(po.totalAmount)} • ${po.status}</small>${po.status !== 'paid' ? `<button data-pay="${po.id}">ยืนยันชำระเงิน / ออกใบเสร็จ PDF</button>` : ''}</div>
+  document.querySelector('#poList').innerHTML = data.purchaseOrders.map((po, index) => `
+    <div class="list-item" style="animation-delay: ${index * 45}ms"><strong>${po.poNumber || po.id}</strong> ${po.customerName || '-'}<small>${po.projectName || '-'} • ${money(po.totalAmount)} • ${po.status}</small>${po.status !== 'paid' ? `<button data-pay="${po.id}">ยืนยันชำระเงิน / ออกใบเสร็จ PDF</button>` : ''}</div>
   `).join('') || '<p>ยังไม่มีข้อมูล</p>';
 
-  document.querySelector('#receiptList').innerHTML = data.receipts.map(r => `
-    <div class="list-item"><strong>${r.id}</strong><small>PO: ${r.poId} • ${money(r.amount)}</small><a href="${r.pdfUrl}" target="_blank">เปิด PDF</a></div>
+  document.querySelector('#receiptList').innerHTML = data.receipts.map((r, index) => `
+    <div class="list-item" style="animation-delay: ${index * 45}ms"><strong>${r.id}</strong><small>PO: ${r.poId} • ${money(r.amount)}</small><a href="${r.pdfUrl}" target="_blank">เปิด PDF</a></div>
   `).join('') || '<p>ยังไม่มีข้อมูล</p>';
 
   document.querySelectorAll('[data-pay]').forEach(button => {
